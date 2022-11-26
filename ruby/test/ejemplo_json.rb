@@ -1,3 +1,3 @@
 require_relative './helpers'
 
-TADsPec.testear
+TADsPec.testear_json

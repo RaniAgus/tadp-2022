@@ -20,26 +20,26 @@ class TestSuite
 end
 
 class ResultadoSuite
+  attr_reader :clase_suite, :resultados_tests
+
   def initialize(clase_suite, resultados_tests)
     @clase_suite = clase_suite
     @resultados_tests = resultados_tests
   end
 
-  def imprimir
-    puts "#{@clase_suite}".colorize(:color => :black, :background => bg_color)
-    @resultados_tests.map { |resultado| resultado.imprimir }
-    puts ""
+  def imprimir(printer)
+    printer.imprimir_suite(self)
   end
 
-  def bg_color
-    if @resultados_tests.any? {|ob|ob.is_a?ResultadoExplotado}
-      :red
+  def resultado
+    if @resultados_tests.any? { |resultado| resultado.is_a? ResultadoExplotado }
+      :explotado
     elsif @resultados_tests.any? { |resultado| resultado.is_a? ResultadoFallido }
-      :yellow
-    elsif @resultados_tests.any? { |resultado| resultado.is_a? ResultadoExitoso }
-      :green
+      :fallido
+    elsif @resultados_tests.all? { |resultado| resultado.is_a? ResultadoExitoso }
+      :exitoso
     else
-      :white
+      nil
     end
   end
 

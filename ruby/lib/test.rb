@@ -23,42 +23,50 @@ class Test
       resultado
     end
   end
+
+  def imprimir(printer)
+    printer.imprimir_suite(printer)
+  end
 end
 
 
 class ResultadoExitoso
+  attr_reader :clase_suite, :nombre
+
   def initialize(clase, nombre)
     @clase_suite = clase
     @nombre = nombre
   end
 
-  def imprimir
-    puts "\t\u{1F680} El test #{@nombre} pasó exitosamente.".green
+  def imprimir(printer)
+    printer.imprimir_test_exitoso(self)
   end
 end
 
 class ResultadoFallido
+  attr_reader :clase_suite, :nombre, :no_paso_asercion
+
   def initialize(clase_suite, nombre, no_paso_asercion)
     @clase_suite = clase_suite
     @nombre = nombre
     @no_paso_asercion = no_paso_asercion
   end
 
-  def imprimir
-    puts "\t\u{1F921} El test #{@nombre} falló:".yellow
-    puts "\t\tEsperaba #{@no_paso_asercion.nombre} <#{@no_paso_asercion.valor_esperado}> pero obtuvo <#{@no_paso_asercion.valor_obtenido}>"
+  def imprimir(printer)
+    printer.imprimir_test_fallido(self)
   end
 end
 
 class ResultadoExplotado
+  attr_reader :clase_suite, :nombre, :error
+
   def initialize(clase_suite, nombre, error)
     @clase_suite = clase_suite
     @nombre = nombre
     @error = error
   end
 
-  def imprimir
-    puts "\t\u{1f4a9} El test #{@nombre} explotó con #{@error.class}:".red
-    puts "\t\t#{@error.backtrace.join("\n\t\t")}"
+  def imprimir(printer)
+    printer.imprimir_test_explotado(self)
   end
 end
