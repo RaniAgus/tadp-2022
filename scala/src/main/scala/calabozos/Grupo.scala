@@ -30,8 +30,10 @@ case class Grupo(private val heroes: List[Heroe],
   def agregarPuertas(puertasNuevas: List[Puerta]): Grupo = copy(puertasConocidas = puertasConocidas ++ puertasNuevas)
   def quitarPuerta(puerta: Puerta): Grupo = copy(puertasConocidas = puertasConocidas.filterNot(_ == puerta))
 
-  def afectarHeroe(criterio: List[Heroe] => Heroe, afectacion: Heroe => Heroe): Grupo = Option(heroesVivos).map(criterio)
-    .fold(this)(heroe => copy(heroes.updated(heroes.indexOf(heroe), afectacion(heroe))))
+  def afectarHeroe(criterio: List[Heroe] => Heroe, afectacion: Heroe => Heroe): Grupo = {
+    val heroe = criterio(heroesVivos)
+    copy(heroes.updated(heroes.indexOf(heroe), afectacion(heroe)))
+  }
 
   def afectarHeroes(afectacion: Heroe => Heroe): Grupo =
     copy(heroes = heroes.map(heroe => if (heroe.estaVivo) afectacion(heroe) else heroe))
