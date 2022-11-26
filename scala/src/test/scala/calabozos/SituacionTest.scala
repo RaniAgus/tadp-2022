@@ -53,5 +53,21 @@ class SituacionTest extends AnyFreeSpec {
             }
         }
     }
+
+    "motin" - {
+      "si el grupo tiene más de un héroe vivo, el héroe con mayor fuerza sale y se pelea con el resto" in {
+        val mago = unMago(fuerzaBase = 2, salud = 20)
+        val guerrero = unGuerrero(fuerzaBase = 3, salud = 20)
+        val ladron = unLadron(fuerzaBase = 2, salud = 20)
+        val grupo = grupoCon(List(mago, guerrero, ladron))
+
+        Motin(grupo).heroesVivos shouldBe List(mago.subirNivel(), ladron.subirNivel())
+      }
+
+      "si el grupo tiene un solo héroe vivo, no pasa nada" in {
+        val grupo = grupoCon(List(unLadron(), unLadron(salud = 0)))
+        Motin(grupo) shouldBe grupo
+      }
+    }
   }
 }

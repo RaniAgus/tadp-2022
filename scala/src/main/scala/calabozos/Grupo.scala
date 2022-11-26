@@ -38,6 +38,11 @@ case class Grupo(private val heroes: List[Heroe],
   def afectarHeroes(afectacion: Heroe => Heroe): Grupo =
     copy(heroes = heroes.map(heroe => if (heroe.estaVivo) afectacion(heroe) else heroe))
 
+  def quitarHeroe(criterio: List[Heroe] => Heroe): (Grupo, Heroe) = {
+    val heroe = criterio(heroes)
+    (copy(heroes = heroes.filterNot(_ == heroe)), heroe)
+  }
+
   def pelearCon(heroe: Heroe): Grupo =
     if (fuerza > heroe.fuerza) afectarHeroes(_.subirNivel())
     else afectarHeroes(_.perderSalud(heroe.fuerza / heroesVivos.size))

@@ -21,9 +21,15 @@ case object TrampaDeLeones extends Situacion {
 case class Encuentro(heroe: Heroe) extends Situacion {
   def apply(grupo: Grupo): Grupo = {
     val grupoConHeroe = grupo.agregarHeroe(heroe)
-    if (grupo.lider.leAgradaGrupo(grupoConHeroe) && heroe.leAgradaGrupo(grupo))
-      grupoConHeroe
-    else
-      grupo.pelearCon(heroe)
+    if (grupo.lider.leAgradaGrupo(grupoConHeroe) && heroe.leAgradaGrupo(grupo)) grupoConHeroe
+    else grupo.pelearCon(heroe)
+  }
+}
+
+case object Motin extends Situacion {
+  def apply(grupo: Grupo): Grupo = if (grupo.heroesVivos.size < 2) grupo
+  else {
+    val (grupoSinHeroe, heroe) = grupo.quitarHeroe(_.maxBy(_.fuerza))
+    grupoSinHeroe.pelearCon(heroe)
   }
 }
