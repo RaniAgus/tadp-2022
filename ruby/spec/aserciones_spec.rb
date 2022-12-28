@@ -61,6 +61,17 @@ describe "Aserciones" do
     end
   end
 
+  context "deberia ser polimorfico_con" do
+    it "es exitoso si el objeto entiende todos los mensajes de la clase dada" do
+      resultado = leandro.deberia ser polimorfico_con Persona
+      expect(resultado).to be true
+    end
+
+    it "no es exitoso si el objeto no entiende todos los mensajes de la clase dada" do
+      expect { Object.new.deberia ser polimorfico_con Persona }.to raise_error AsercionNoPasoError
+    end
+  end
+
   context "deberia ser uno_de_estos" do
     it "es exitoso si recibe una lista y contiene alguno de los elementos" do
       resultado = leandro.edad.deberia ser uno_de_estos [7, 22, "hola"]

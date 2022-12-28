@@ -35,6 +35,14 @@ module Aserciones
     end
   end
 
+  def polimorfico_con(modulo)
+    Asercion.new do |valor_obtenido|
+      unless modulo.instance_methods(false).all? { |it| valor_obtenido.respond_to? it }
+        raise AsercionNoPasoError.new("ser polimorfico con", modulo, valor_obtenido)
+      end
+    end
+  end
+
   def entender(valor_esperado)
     Asercion.new do |valor_obtenido|
       unless valor_obtenido.respond_to? valor_esperado
